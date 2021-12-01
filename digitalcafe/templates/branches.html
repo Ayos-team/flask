@@ -1,0 +1,9 @@
+{% include "header.html" %}
+        <h1>Branches</h1>
+
+        <ul>
+            {% for product in product_list %}
+                        <tr><td><a href="productdetails?code={{branches["code"]}}">{{branches["code"]}}</a></td><td>{{branches["name"]}}</td><td>{{branches["phonenumber"]}}</td></tr>
+            {% endfor %}
+        </ul>
+{% include "footer.html" %}
