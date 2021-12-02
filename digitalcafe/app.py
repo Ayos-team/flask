@@ -23,7 +23,15 @@ def productdetails():
 
 @app.route('/branches')
 def branches():
-    return render_template('branches.html', page="Branches")
+    product_list = db.get_branches()
+    return render_template('branches.html', page="Branches", branch_list=branch_list)
+
+@app.route('/branchdetails')
+def branchdetails():
+    code = request.args.get('code', '')
+    branch = db.get_branch(int(code))
+
+    return render_template('productdetails.html', code=code, branch=branch)
 
 @app.route('/aboutus')
 def aboutus():

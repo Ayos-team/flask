@@ -3,7 +3,7 @@
 
         <ul>
             {% for branch in branch_list %}
-                        <tr><td><a href="productdetails?code={{branches["code"]}}">{{branches["code"]}}</a></td><td>{{branches["name"]}}</td><td>{{branches["phonenumber"]}}</td></tr>
+                        <list><a href="productdetails?code={{branches["code"]}}">{{branches["code"]}}</a></list>
             {% endfor %}
         </ul>
 {% include "footer.html" %}
