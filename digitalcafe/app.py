@@ -2,7 +2,6 @@ from flask import Flask, redirect
 from flask import render_template
 from flask import request
 from flask import session
-from flask import flash
 import database as db
 import authentication
 import logging
@@ -57,21 +56,14 @@ def aboutus():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    #error = None
-    # if request.method == 'POST':
-    # if request.form['username'] != 'username' or request.form['password'] != 'password':
-    #error = 'Invalid Credentials. Please try again.'
-    # else:
-    # return redirect('/')
     return render_template('login.html')
-
 
 @app.route('/auth', methods=['POST'])
 def auth():
     username = request.form.get('username')
     password = request.form.get('password')
-    database_username = db.get_user(username)
-    database_password = db.get_pass(username,password)
+    database_username = db.get_username(username)
+    database_password = db.get_pass(password)
     error = None
 
     is_successful, user = authentication.login(username, password)
@@ -79,12 +71,12 @@ def auth():
     if(is_successful):
         session["user"] = user
         return redirect('/')
-    elif(database_username != username) and (database_password == password):
+    elif(database_username != username and database_password == password):
         error = 'Invalid username. Please try again.'
         return render_template('login.html', error=error)
-#    elif(database_password != password and database_username == username):
-#        error = 'Invalid password. Please try again.'
-#        return render_template('login.html', error=error)
+    elif(database_username == username and database_password != password):
+        error = 'Invalid password. Please try again.'
+        return render_template('login.html', error=error)
     else:
         error = 'Invalid Credentials. Please try again.'
         return render_template('login.html', error=error)
@@ -104,7 +96,7 @@ def addtocart():
     item = dict()
     # A click to add a product translates to a
     # quantity of 1 for now
-
+    item["code"] = code
     item["qty"] = 1
     item["name"] = product["name"]
     item["subtotal"] = product["price"] * item["qty"]
